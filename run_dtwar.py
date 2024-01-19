@@ -22,7 +22,14 @@ def attack(args):
     CLASS_NB = args.class_nb
 
     print(f"DTW-AR attack algorithm on {args.dataset_name}".format(dataset_name))
-    X_train, y_train, X_test, y_test = pkl.load(open(path, 'rb'))
+    data = pkl.load(open(path, 'rb'))
+    # X_train, y_train, X_test, y_test = pkl.load(open(path, 'rb'))
+    X_train = data['X_train']
+    X_test = data['X_test']
+    y_train = data['y_train']
+    y_test = data['y_test']
+    # y_train = np.append(np.arry(y_train))
+    # y_test = np.append(np.arry(y_test))
     assert len(X_train.shape)==4, "Shape must be (N, 1, SEG_SIZE, CHANNEL_NB)"
     assert len(X_test.shape)==4, "Shape must be (N, 1, SEG_SIZE, CHANNEL_NB)"
     experim_path = os.path.join("Experiments", "Experiment_"+dataset_name)
@@ -48,7 +55,6 @@ def attack(args):
     else: 
         X_ind, X_natural, X_adversarial, y_natural, y_adversarial = 0, np.ndarray((0,)+X_train.shape[1:]), np.ndarray((0,)+X_train.shape[1:]), np.array([]), np.array([])
 
-    
     for sample_id, X in enumerate(tqdm(X_train, desc="DTW-AR Run")):
         if sample_id < X_ind:
             continue
